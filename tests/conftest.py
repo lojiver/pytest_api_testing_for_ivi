@@ -12,6 +12,11 @@ def auth():
 
 
 @pytest.fixture
+def headers():
+    return {'Content-type': 'application/json'}
+
+
+@pytest.fixture
 def reset_base(auth, url_reset):
     requests.post(url_reset, auth=auth)
 
