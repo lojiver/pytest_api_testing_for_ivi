@@ -59,6 +59,7 @@ python3 -m pip install --upgrade pip
 ```
 pip install -r requirements.txt
 ```
+Создать файл .env на основе env.template, добавив туда авторизационные логин и пароль
 
 Запустить pytest:
 ```
