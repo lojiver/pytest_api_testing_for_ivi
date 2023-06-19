@@ -193,6 +193,19 @@ class TestCharactersAuthorizedInvalid:
         assert_status_code(response.status_code, HTTPStatus.BAD_REQUEST)
         validate_error_text(expected_error=Errors.NO_SUCH_NAME, response_text=text_response)
 
+    def test_update_character_no_name(self):
+        '''Тест обновления персонажа без обязательных параметров.
+        Имя - единственный обязательный параметр, поэтому только без него
+        Проверяет, что получен корректный статус код BAD_REQUEST и сообщение об ошибке соответствует ожидаемому.'''
+        payload = CharacterNoRequiredField()
+
+        response = update_character_api(payload.dict(), auth=True)
+        text_response = response.text
+
+        assert_status_code(response.status_code, HTTPStatus.BAD_REQUEST)
+
+        validate_error_text(expected_error=Errors.NO_REQUIRED_FIELD, response_text=text_response)
+
     def test_update_character_invalid_data(self, function_character):
         '''Тест обновления персонажа с невалидными данными.
         Проверяет, что получен корректный статус код BAD_REQUEST и сообщение об ошибке соответствует ожидаемому.'''
