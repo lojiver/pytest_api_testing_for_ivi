@@ -86,8 +86,9 @@ class TestCharactersAuthorizedValid:
 
         assert_status_code(delete_character_response.status_code, HTTPStatus.OK)
         assert_status_code(
-            get_character_response.status_code, HTTPStatus.NOT_FOUND
+            get_character_response.status_code, HTTPStatus.BAD_REQUEST
         )
+        validate_error_text(expected_error=Errors.NO_SUCH_NAME, response_text=get_character_response.text)
 
 
 @pytest.mark.characters
