@@ -92,25 +92,17 @@ class TestCharactersAuthorizedValid:
 
 
 @pytest.mark.characters
-@pytest.mark.parametrize('get_list', [get_characters_api])
-@pytest.mark.parametrize('with_payload', [create_character_api, update_character_api])
-@pytest.mark.parametrize('with_name', [get_character_api, delete_character_api])
-def test_character_unauthorized(function_character: Character, get_list: callable,
-                                with_name: callable, with_payload: callable):
+def test_character_unauthorized(function_character: Character):
     '''Тесты операций с персонажами без авторизации.
     Проверяют, что получен корректный статус код UNAUTHORIZED для каждой операции.'''
 
-    # разделила запросы на группы по аргументам, скорее всего можно ещё компактнее сделать,
-    # но я не придумаю и не видела готовых решений
-    response = get_list()
-    assert_status_code(response.status_code, HTTPStatus.UNAUTHORIZED)
-
     payload = Character()
-    response = with_payload(payload.dict())
-    assert_status_code(response.status_code, HTTPStatus.UNAUTHORIZED)
+    responses = [
+        get_characters_api(), create_character_api(payload.dict()), update_character_api(payload.dict()),
+        get_character_api(function_character.name), delete_character_api(function_character.name)]
 
-    response = with_name(function_character.name)
-    assert_status_code(response.status_code, HTTPStatus.UNAUTHORIZED)
+    for response in responses:
+        assert_status_code(response.status_code, HTTPStatus.UNAUTHORIZED)
 
 
 @pytest.mark.characters
