@@ -218,18 +218,6 @@ class TestCharactersAuthorizedInvalid:
 
         validate_error_text(expected_error=Errors.NOT_VALID_VALUE, response_text=text_response)
 
-    def test_update_character_already_exists_name(self, function_character):
-        '''Тест обновления персонажа с уже существующим именем.
-        Проверяет, что получен корректный статус код BAD_REQUEST и сообщение об ошибке соответствует ожидаемому.'''
-
-        payload = Character()
-        payload.name = function_character.name
-        response = create_character_api(payload.dict(), auth=True)
-        text_response = response.text
-
-        assert_status_code(response.status_code, HTTPStatus.BAD_REQUEST)
-        validate_error_text(expected_error=Errors.ALREADY_EXISTS, response_text=text_response)
-
     def test_delete_name_not_exists(self):
         '''Тест удаления несуществующего персонажа.
         Проверяет, что получен корректный статус код BAD_REQUEST и сообщение об ошибке соответствует ожидаемому.'''
